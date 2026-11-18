@@ -233,47 +233,63 @@ hr {
 # DATA
 # ---------------------------------------------------------
 @st.cache_data
+
 def load_data():
     ratings_path = DATA_DIR / "u.data"
     movies_path = DATA_DIR / "u.item"
 
-    if not ratings_path.exists() or not movies_path.exists():
-        return None, None
+    # Check that both dataset files exist
+    if not ratings_path.exists():
+        raise FileNotFoundError(f"Ratings file missing: {ratings_path}")
 
+    if not movies_path.exists():
+        raise FileNotFoundError(f"Movies file missing: {movies_path}")
+
+    # Load ratings
     ratings = pd.read_csv(
-        ratings_path, sep="\t",
+        ratings_path,
+        sep="\t",
         names=["user_id", "movie_id", "rating", "timestamp"]
     )
 
+    # Load movie information
     movie_columns = [
         "movie_id", "title", "release_date",
         "video_release_date", "IMDb_URL"
     ] + [f"genre_{i}" for i in range(19)]
 
     movies = pd.read_csv(
-        movies_path, sep="|",
-        names=movie_columns, encoding="latin-1",
+        movies_path,
+        sep="|",
+        names=movie_columns,
+        encoding="latin-1",
         usecols=range(24)
     )
 
+    # Clean ratings
     for col in ["user_id", "movie_id", "rating"]:
         ratings[col] = pd.to_numeric(ratings[col], errors="coerce")
 
     ratings = ratings.dropna(
         subset=["user_id", "movie_id", "rating"]
     )
+
     ratings = ratings[ratings["rating"].between(1, 5)].copy()
     ratings["user_id"] = ratings["user_id"].astype(int)
     ratings["movie_id"] = ratings["movie_id"].astype(int)
 
+    # Clean movie information
     movies = movies.dropna(subset=["title"]).copy()
+
     movies["movie_id"] = pd.to_numeric(
         movies["movie_id"], errors="coerce"
     )
+
     movies = movies.dropna(subset=["movie_id"])
     movies["movie_id"] = movies["movie_id"].astype(int)
 
     return ratings, movies
+
 
 
 ratings_path = DATA_DIR / "u.data"
