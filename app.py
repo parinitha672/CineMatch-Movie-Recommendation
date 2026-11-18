@@ -279,10 +279,23 @@ def load_data():
 ratings, movies = load_data()
 
 if ratings is None or movies is None:
-    st.error(
-        "Dataset files are missing. Check that data/ml-100k "
-        "contains u.data and u.item."
-    )
+    st.error("Dataset files were not found.")
+
+    st.write("App directory:", str(BASE_DIR))
+    st.write("Expected dataset directory:", str(DATA_DIR))
+    st.write("Dataset directory exists:", DATA_DIR.exists())
+
+    if DATA_DIR.exists():
+        st.write(
+            "Files found in dataset directory:",
+            [p.name for p in DATA_DIR.iterdir()]
+        )
+    else:
+        st.write(
+            "Folders available beside app.py:",
+            [p.name for p in BASE_DIR.iterdir()]
+        )
+
     st.stop()
 
 
