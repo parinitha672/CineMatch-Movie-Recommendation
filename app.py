@@ -292,17 +292,6 @@ def load_data():
 
 
 
-ratings_path = DATA_DIR / "u.data"
-movies_path = DATA_DIR / "u.item"
-
-st.write("Ratings file exists:", ratings_path.exists())
-st.write("Movies file exists:", movies_path.exists())
-
-if ratings_path.exists():
-    st.write("Ratings file size:", ratings_path.stat().st_size, "bytes")
-
-if movies_path.exists():
-    st.write("Movies file size:", movies_path.stat().st_size, "bytes")
 
 try:
     ratings, movies = load_data()
