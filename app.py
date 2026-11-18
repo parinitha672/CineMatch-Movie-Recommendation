@@ -276,26 +276,26 @@ def load_data():
     return ratings, movies
 
 
-ratings, movies = load_data()
+ratings_path = DATA_DIR / "u.data"
+movies_path = DATA_DIR / "u.item"
+
+st.write("Ratings file exists:", ratings_path.exists())
+st.write("Movies file exists:", movies_path.exists())
+
+if ratings_path.exists():
+    st.write("Ratings file size:", ratings_path.stat().st_size, "bytes")
+
+if movies_path.exists():
+    st.write("Movies file size:", movies_path.stat().st_size, "bytes")
+
+try:
+    ratings, movies = load_data()
+except Exception as e:
+    st.error(f"Dataset loading error: {type(e).__name__}: {e}")
+    st.stop()
 
 if ratings is None or movies is None:
-    st.error("Dataset files were not found.")
-
-    st.write("App directory:", str(BASE_DIR))
-    st.write("Expected dataset directory:", str(DATA_DIR))
-    st.write("Dataset directory exists:", DATA_DIR.exists())
-
-    if DATA_DIR.exists():
-        st.write(
-            "Files found in dataset directory:",
-            [p.name for p in DATA_DIR.iterdir()]
-        )
-    else:
-        st.write(
-            "Folders available beside app.py:",
-            [p.name for p in BASE_DIR.iterdir()]
-        )
-
+    st.error("The dataset files could not be found.")
     st.stop()
 
 
