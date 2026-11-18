@@ -687,7 +687,7 @@ with tab4:
         "indicate smaller rating-prediction errors."
     )
 
-    evaluation_path = OUTPUT_DIR / "model_evaluation.csv"
+    evaluation_path = BASE_DIR / "model_evaluation.csv"
 
     if evaluation_path.exists():
         evaluation = pd.read_csv(evaluation_path)
