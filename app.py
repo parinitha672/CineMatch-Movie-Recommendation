@@ -13,7 +13,7 @@ st.set_page_config(
 )
 
 BASE_DIR = Path(__file__).resolve().parent
-DATA_DIR = BASE_DIR / "data" / "ml-100k"
+DATA_DIR = BASE_DIR
 OUTPUT_DIR = BASE_DIR / "outputs"
 
 # ---------------------------------------------------------
